@@ -69,8 +69,9 @@ class PoolGame(object):
                 self._space.step(self._dt)
             self._process_events()
             self._update_balls()
-            self._clear_screen()
             self._draw_objects()
+            self._clear_screen()
+            self._draw_balls()
             pygame.display.flip()
             # Delay fixed time between frames
             self._clock.tick(50)
@@ -189,6 +190,17 @@ class PoolGame(object):
         :return: None
         """
         self._space.debug_draw(self._draw_options)
+
+    def _draw_balls(self):
+        for ball_shape in self._balls:
+            origin = ball_shape.body.position
+            radius = int(BASE_RADIUS * SCALE_FACTOR)
+            width = radius*2
+            colour = THECOLORS['pink']
+            circle = pygame.Surface([radius*2,radius*2]).convert_alpha()
+            circle.fill([0,0,0,0])
+            pygame.draw.circle(circle, colour, [circle.get_width()//2, circle.get_height()//2], radius+(width//2))
+            self._screen.blit(circle, [origin[0] - (circle.get_width()/2), WINDOW_HEIGHT - origin[1] - (circle.get_height()/2)])
 
 
 if __name__ == '__main__':
